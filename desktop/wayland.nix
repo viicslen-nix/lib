@@ -3,7 +3,7 @@
 # Usage:
 #   wl = vlib.wayland { inherit pkgs lib; };
 #   wl.mkRecordCmd "-o DP-1"
-#   wl.mkMenu [ { key = "q"; desc = "..."; cmd = "..."; } ]
+#   wl.mkMenu [ { key = "q"; desc = "..."; cmd = "..."; } ]   # returns exec path string
 {
   pkgs,
   lib,
@@ -23,6 +23,7 @@ in {
 
   # Build a wlr-which-key popup menu from a list of
   # { key, desc, cmd } attribute sets.
+  # Returns the executable path string directly (no lib.getExe needed at call sites).
   mkMenu = menu: let
     configFile =
       pkgs.writeText "config.yaml"
@@ -31,7 +32,7 @@ in {
         inherit menu;
       });
   in
-    pkgs.writeShellScriptBin "wm-menu" ''
+    lib.getExe (pkgs.writeShellScriptBin "wm-menu" ''
       exec ${lib.getExe pkgs.wlr-which-key} ${configFile}
-    '';
+    '');
 }
