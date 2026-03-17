@@ -37,10 +37,11 @@
       umport     = (import ./umport.nix {inherit lib;}).umport;
       persistence = import ./persistence.nix {inputs = {nixpkgs = nixpkgs;};};
 
-      # Per-compositor helper sets – apply { pkgs, lib } once to get the helpers.
-      # Example: niriLib = vlib.niri { inherit pkgs lib; };
-      #          niriLib.mkRecordCmd ""  niriLib.mkMenu [ ... ]
-      niri = {pkgs, lib}: import ./desktop/niri.nix {inherit pkgs lib;};
+      # Wayland compositor helpers – apply { pkgs, lib } once to get the helpers.
+      # Works under any Wayland WM (niri, sway, Hyprland, …).
+      # Example: wl = vlib.wayland { inherit pkgs lib; };
+      #          wl.mkRecordCmd ""  wl.mkMenu [ ... ]
+      wayland = {pkgs, lib}: import ./desktop/wayland.nix {inherit pkgs lib;};
     };
   };
 }

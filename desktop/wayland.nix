@@ -1,8 +1,9 @@
-# Niri-specific mk helper functions.
+# Generic Wayland compositor helpers (wl-screenrec, wlr-which-key).
+# These work under any Wayland WM/compositor (niri, sway, Hyprland, etc.)
 # Usage:
-#   niriLib = inputs.nixpkgs-lib.mkDesktopLib { inherit pkgs lib; };
-#   niriLib.niri.mkRecordCmd "-o myoutput"
-#   niriLib.niri.mkMenu [ { key = "q"; desc = "..."; cmd = "..."; } ]
+#   wl = vlib.wayland { inherit pkgs lib; };
+#   wl.mkRecordCmd "-o DP-1"
+#   wl.mkMenu [ { key = "q"; desc = "..."; cmd = "..."; } ]
 {
   pkgs,
   lib,
@@ -30,7 +31,7 @@ in {
         inherit menu;
       });
   in
-    pkgs.writeShellScriptBin "niri-menu" ''
+    pkgs.writeShellScriptBin "wm-menu" ''
       exec ${lib.getExe pkgs.wlr-which-key} ${configFile}
     '';
 }
