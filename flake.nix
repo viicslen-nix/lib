@@ -11,21 +11,31 @@
     nixpkgs,
     systems,
     ...
-  }: {
-    # mkLib: call with { inputs, outputs } from your consuming flake.
-    # Returns nixpkgs.lib merged with all custom helpers (same shape as the
-    # main nixos repo's lib/default.nix).
-    # Inject this flake's own systems into the consumer's inputs so the
-    # root flake doesn't need to declare a systems input of its own.
-    mkLib = {inputs, outputs}: import ./default.nix {
-      inherit outputs;
-      inputs = inputs // {systems = self.inputs.systems;};
-    };
+  }: let
+    lib = nixpkgs.lib;
+    defaultSystems = import systems;
+    mkPkgs = system: import nixpkgs {inherit system; config.allowUnfree = true;};
+  in {
+    # mkLib: only needed for host building.
+    # mkNixosConfigurations passes the consumer's inputs/outputs as specialArgs
+    # into every NixOS host config, so those cannot be pre-baked here.
+    mkLib = {inputs, outputs}: import ./hosts.nix {inherit inputs outputs;};
 
-    # Pure helpers that only need nixpkgs.lib (no flake outputs required).
-    lib = {
-      modules = import ./modules.nix {lib = nixpkgs.lib;};
-      umport = (import ./umport.nix {lib = nixpkgs.lib;}).umport;
+    # All helpers that only depend on this flake's own nixpkgs + systems.
+    # Because viicslen-lib.inputs.nixpkgs follows the consumer's nixpkgs,
+    # these functions act on the consumer's nixpkgs version at zero extra cost.
+    lib = lib // {
+      inherit defaultSystems;
+      genSystems = lib.genAttrs defaultSystems;
+
+      pkgsFor = mkPkgs;
+      pkgFromSystem = pkg: lib.genAttrs defaultSystems (system: (mkPkgs system).${pkg});
+      callPackageForSystem = system: path: overrides:
+        (mkPkgs system).callPackage path overrides;
+
+      modules    = import ./modules.nix {inherit lib;};
+      umport     = (import ./umport.nix {inherit lib;}).umport;
+      persistence = import ./persistence.nix {inputs = {nixpkgs = nixpkgs;};};
     };
 
     # Desktop helpers factory – call with { pkgs, lib } to get a set of
