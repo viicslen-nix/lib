@@ -36,15 +36,12 @@
       modules    = import ./modules.nix {inherit lib;};
       umport     = (import ./umport.nix {inherit lib;}).umport;
       persistence = import ./persistence.nix {inputs = {nixpkgs = nixpkgs;};};
-    };
 
-    # Desktop helpers factory – call with { pkgs, lib } to get a set of
-    # compositor-specific mk-functions.
-    # Example:
-    #   niriLib = inputs.viicslen-lib.mkDesktopLib { inherit pkgs lib; };
-    #   niriLib.niri.mkRecordCmd ""
-    mkDesktopLib = {pkgs, lib}: {
-      niri = import ./desktop/niri.nix {inherit pkgs lib;};
+      # Desktop helpers – call with { pkgs, lib } from module context.
+      # Example: vlib.mkDesktopLib { inherit pkgs lib; }
+      mkDesktopLib = {pkgs, lib}: {
+        niri = import ./desktop/niri.nix {inherit pkgs lib;};
+      };
     };
   };
 }
