@@ -16,12 +16,6 @@
     defaultSystems = import systems;
     mkPkgs = system: import nixpkgs {inherit system; config.allowUnfree = true;};
   in {
-    # mkLib: only needed for host building.
-    # mkNixosConfigurations passes the consumer's inputs/outputs as specialArgs
-    # into every NixOS host config, so those cannot be pre-baked here.
-    mkLib = {inputs, outputs}: import ./hosts.nix {inherit inputs outputs;};
-
-    # All helpers that only depend on this flake's own nixpkgs + systems.
     # Because viicslen-lib.inputs.nixpkgs follows the consumer's nixpkgs,
     # these functions act on the consumer's nixpkgs version at zero extra cost.
     lib = lib // {
@@ -33,6 +27,7 @@
       callPackageForSystem = system: path: overrides:
         (mkPkgs system).callPackage path overrides;
 
+      hosts      = import ./hosts.nix {inherit lib;};
       modules    = import ./modules.nix {inherit lib;};
       umport     = (import ./umport.nix {inherit lib;}).umport;
       persistence = import ./persistence.nix {inputs = {nixpkgs = nixpkgs;};};

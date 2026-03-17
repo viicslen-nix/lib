@@ -1,10 +1,6 @@
-{
-  inputs,
-  outputs,
-  ...
-}: {
+{lib}: {
   # Generate nixosConfigurations from host definitions
-  mkNixosConfigurations = hostsPath: let
+  mkNixosConfigurations = {inputs, outputs}: hostsPath: let
     nixpkgs = inputs.nixpkgs;
     lib = nixpkgs.lib;
 
