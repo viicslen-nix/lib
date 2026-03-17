@@ -37,11 +37,10 @@
       umport     = (import ./umport.nix {inherit lib;}).umport;
       persistence = import ./persistence.nix {inputs = {nixpkgs = nixpkgs;};};
 
-      # Desktop helpers – call with { pkgs, lib } from module context.
-      # Example: vlib.mkDesktopLib { inherit pkgs lib; }
-      mkDesktopLib = {pkgs, lib}: {
-        niri = import ./desktop/niri.nix {inherit pkgs lib;};
-      };
+      # Per-compositor helper sets – apply { pkgs, lib } once to get the helpers.
+      # Example: niriLib = vlib.niri { inherit pkgs lib; };
+      #          niriLib.mkRecordCmd ""  niriLib.mkMenu [ ... ]
+      niri = {pkgs, lib}: import ./desktop/niri.nix {inherit pkgs lib;};
     };
   };
 }
