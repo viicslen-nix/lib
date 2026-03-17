@@ -18,7 +18,7 @@
   in {
     # Because viicslen-lib.inputs.nixpkgs follows the consumer's nixpkgs,
     # these functions act on the consumer's nixpkgs version at zero extra cost.
-    lib = lib // {
+    lib = {
       inherit defaultSystems;
       genSystems = lib.genAttrs defaultSystems;
 
