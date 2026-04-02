@@ -1,11 +1,22 @@
 {
   inputs,
-  outputs,
+  outputs ? null,
+  self ? null,
   ...
 }: let
+  resolvedOutputs =
+    if outputs != null
+    then outputs
+    else if self != null
+    then (self.outputs or self)
+    else {};
+
   # Import our custom helpers
   moduleHelpers = import ./modules.nix {lib = inputs.nixpkgs.lib;};
-  hostsHelpers = import ./hosts.nix {inherit inputs outputs;};
+  hostsHelpers = import ./hosts.nix {
+    inherit inputs;
+    outputs = resolvedOutputs;
+  };
   persistenceHelpers = import ./persistence.nix {inherit inputs;};
 
   defaultSystems = import inputs.systems;

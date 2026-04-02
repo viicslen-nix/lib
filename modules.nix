@@ -137,4 +137,46 @@
       (builtins.filter (name: modules.${name} == null) (builtins.attrNames modules));
   in
     validModules;
+
+  # Dendritic metadata inventory for imported modules
+  # Produces attrset of module definitions keyed by stable module id.
+  dendriticModuleDefinitions = path: let
+    entries = builtins.readDir path;
+
+    shouldExclude = name: let
+      startsWithDot = builtins.substring 0 1 name == ".";
+      startsWithUnderscore = builtins.substring 0 1 name == "_";
+      specialNames = ["all.nix" "default.nix"];
+      isSpecial = builtins.elem name specialNames;
+      hasExcludedExt = builtins.match ".*\\.(md|txt|org|rst)$" name != null;
+    in
+      startsWithDot || startsWithUnderscore || isSpecial || hasExcludedExt;
+
+    normalizeId = raw:
+      builtins.replaceStrings ["/" " "] ["." "-"] raw;
+
+    dirs =
+      builtins.filter
+      (name: entries.${name} == "directory" && !(shouldExclude name))
+      (builtins.attrNames entries);
+
+    toDefinition = name: let
+      modulePath = path + "/${name}/default.nix";
+    in {
+      name = normalizeId name;
+      value =
+        if builtins.pathExists modulePath
+        then {
+          id = normalizeId name;
+          importPath = modulePath;
+          defaultAutoEnable = true;
+          module = import modulePath;
+        }
+        else null;
+    };
+
+    defs = builtins.listToAttrs (map toDefinition dirs);
+  in
+    builtins.removeAttrs defs
+    (builtins.filter (name: defs.${name} == null) (builtins.attrNames defs));
 }
