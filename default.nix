@@ -36,7 +36,9 @@ in
       inputs.nixpkgs.lib.genAttrs defaultSystems (system: ((import inputs.nixpkgs {
           inherit system;
           config.allowUnfree = true;
-        }).${pkg}));
+        }).${
+          pkg
+        }));
     callPackageForSystem = system: path: overrides: let
       pkgs = import inputs.nixpkgs {
         inherit system;
