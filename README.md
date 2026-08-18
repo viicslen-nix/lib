@@ -6,7 +6,7 @@ Shared Nix helper library used across the [nixos](https://github.com/viicslen-ni
 
 | File | Purpose |
 |------|---------|
-| `default.nix` | Assembles everything into a single lib, merged on top of `nixpkgs.lib` |
+| `flake.nix` | Assembles everything into the `lib` flake output — add new helper files here |
 | `hosts.nix` | `mkNixosConfigurations` – auto-wires NixOS hosts from a hosts directory |
 | `modules.nix` | `autoImportModules`, `autoImportCategories`, `autoImportRecursive` |
 | `options.nix` | `mkEnabledOption`, `mkDefaultAttrs`, `mkDefaultRecursive` – module-system helpers |
