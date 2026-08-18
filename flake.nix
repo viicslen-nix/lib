@@ -35,6 +35,7 @@
       modules = import ./modules.nix {inherit lib;};
       umport = (import ./umport.nix {inherit lib;}).umport;
       persistence = import ./persistence.nix {inputs = {nixpkgs = nixpkgs;};};
+      skills = import ./skills.nix {inherit lib;};
 
       # Wayland compositor helpers – apply { pkgs, lib } once to get the helpers.
       # Works under any Wayland WM (niri, sway, Hyprland, …).

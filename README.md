@@ -10,6 +10,7 @@ Shared Nix helper library used across the [nixos](https://github.com/viicslen-ni
 | `hosts.nix` | `mkNixosConfigurations` – auto-wires NixOS hosts from a hosts directory |
 | `modules.nix` | `autoImportModules`, `autoImportCategories`, `autoImportRecursive` |
 | `persistence.nix` | `mkPersistence`, `mkHmPersistence`, `mkNixosPersistence`, … |
+| `skills.nix` | `mkSkillAttrSet`, `mkMarkdownAttrSet`, `fromInput`, `selectFromInput`, `patchSkill` – AI agent skill sets |
 | `umport.nix` | `umport` – recursive/non-recursive nix file importer (MIT, upstream: yunfachi/nypkgs) |
 | `desktop/niri.nix` | `mkRecordCmd`, `mkMenu` – niri compositor helpers |
 

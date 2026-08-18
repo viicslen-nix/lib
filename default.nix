@@ -18,6 +18,7 @@
     outputs = resolvedOutputs;
   };
   persistenceHelpers = import ./persistence.nix {inherit inputs;};
+  skillsHelpers = import ./skills.nix {lib = inputs.nixpkgs.lib;};
 
   defaultSystems = import inputs.systems;
 in
@@ -51,4 +52,5 @@ in
     hosts = hostsHelpers;
     modules = moduleHelpers;
     persistence = persistenceHelpers;
+    skills = skillsHelpers;
   }
