@@ -10,6 +10,7 @@ Shared Nix helper library used across the [nixos](https://github.com/viicslen-ni
 | `hosts.nix` | `mkNixosConfigurations` – auto-wires NixOS hosts from a hosts directory |
 | `modules.nix` | `autoImportModules`, `autoImportCategories`, `autoImportRecursive` |
 | `options.nix` | `mkEnabledOption`, `mkDefaultAttrs`, `mkDefaultRecursive` – module-system helpers |
+| `containers.nix` | `mkHostOption`, `mkMkcertDomains`, `mkTraefikLabels` – OCI-container module helpers |
 | `discovery.nix` | `discover`, `segmentsOf`, `assertUnique`, `mkTree` – filesystem module discovery + nested view over a flat registry |
 | `overlays.nix` | `mkFlakeInputsOverlay`, `mkChannelOverlay` – overlay constructors |
 | `persistence.nix` | `mkPersistence`, `mkHmPersistence`, `mkNixosPersistence`, … |

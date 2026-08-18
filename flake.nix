@@ -38,6 +38,7 @@
       options = import ./options.nix {inherit lib;};
       discovery = import ./discovery.nix {inherit lib;};
       overlays = import ./overlays.nix {inherit lib;};
+      containers = import ./containers.nix {inherit lib;};
       skills = import ./skills.nix {inherit lib;};
 
       # Wayland compositor helpers – apply { pkgs, lib } once to get the helpers.
