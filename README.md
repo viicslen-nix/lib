@@ -13,6 +13,7 @@ Shared Nix helper library used across the [nixos](https://github.com/viicslen-ni
 | `containers.nix` | `mkHostOption`, `mkMkcertDomains`, `mkTraefikLabels` – OCI-container module helpers |
 | `discovery.nix` | `discover`, `segmentsOf`, `assertUnique`, `mkTree` – filesystem module discovery + nested view over a flat registry |
 | `overlays.nix` | `mkFlakeInputsOverlay`, `mkChannelOverlay` – overlay constructors |
+| `omni.nix` | `mkInputs` – resolve an omniflake-index mapping into `inputs` under one override policy, with `ownNixpkgs` to keep an upstream on its own nixpkgs pin |
 | `persistence.nix` | `mkPersistence`, `mkHmPersistence`, `mkNixosPersistence`, … |
 | `skills.nix` | `mkSkillAttrSet`, `mkMarkdownAttrSet`, `fromInput`, `selectFromInput`, `patchSkill` – AI agent skill sets |
 | `umport.nix` | `umport` – recursive/non-recursive nix file importer (MIT, upstream: yunfachi/nypkgs) |
