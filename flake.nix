@@ -45,7 +45,7 @@
       # Wayland compositor helpers – apply { pkgs, lib } once to get the helpers.
       # Works under any Wayland WM (niri, sway, Hyprland, …).
       # Example: wl = vlib.wayland { inherit pkgs lib; };
-      #          wl.mkRecordCmd ""  wl.mkMenu [ ... ]
+      #          wl.mkRecordCmd "-o DP-1"  wl.mkMenu [ ... ]
       wayland = {
         pkgs,
         lib,

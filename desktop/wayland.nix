@@ -10,16 +10,20 @@
 }: let
   notify = "${pkgs.libnotify}/bin/notify-send";
 in {
-  # Wrap a wl-screenrec invocation with start/stop notifications.
-  # grimArgs: extra CLI flags forwarded to wl-screenrec (e.g. "-o DP-1",
-  #           "-g \"100,100 800x600\"", or "" for all monitors).
-  mkRecordCmd = grimArgs: let
-    recordingFile = "$HOME/Videos/Recordings/recording-$(date +%Y%m%d-%H%M%S).mp4";
-  in ''
-    FILE="${recordingFile}"; \
-    ${notify} -u low -t 3000 "Recording started" "Press Mod+Shift+R → q to stop"; \
-    ${lib.getExe pkgs.wl-screenrec} ${grimArgs} -f "$FILE"; \
-    ${notify} "Recording saved" "$FILE"'';
+  # Shell snippet running wl-screenrec with extra flags (e.g. "-o DP-1"), spliced unquoted so they may use $(...); an empty one (a cancelled picker) exits without recording.
+  mkRecordCmd = grimArgs: ''
+    set -- ${grimArgs}
+    for arg; do [ -n "$arg" ] || exit 0; done
+    DIR="$HOME/Videos/Recordings"
+    FILE="$DIR/recording-$(date +%Y%m%d-%H%M%S).mp4"
+    mkdir -p "$DIR"
+    ${notify} -u low -t 3000 "Recording started" "Press Mod+Shift+R → q to stop" &
+    if ${lib.getExe pkgs.wl-screenrec} "$@" -f "$FILE"; then
+      ${notify} "Recording saved" "$FILE"
+    else
+      ${notify} -u critical "Recording failed" "wl-screenrec exited with status $?"
+    fi
+  '';
 
   # Build a wlr-which-key popup menu from a list of
   # { key, desc, cmd } attribute sets.

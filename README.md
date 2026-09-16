@@ -17,7 +17,7 @@ Shared Nix helper library used across the [nixos](https://github.com/viicslen-ni
 | `persistence.nix` | `mkPersistence`, `mkHmPersistence`, `mkNixosPersistence`, … |
 | `skills.nix` | `mkSkillAttrSet`, `mkMarkdownAttrSet`, `fromInput`, `selectFromInput`, `patchSkill` – AI agent skill sets |
 | `umport.nix` | `umport` – recursive/non-recursive nix file importer (MIT, upstream: yunfachi/nypkgs) |
-| `desktop/niri.nix` | `mkRecordCmd`, `mkMenu` – niri compositor helpers |
+| `desktop/wayland.nix` | `mkRecordCmd`, `mkMenu` – Wayland compositor helpers (wl-screenrec, wlr-which-key), exported as `lib.wayland` |
 
 ## Usage
 
@@ -27,10 +27,10 @@ Shared Nix helper library used across the [nixos](https://github.com/viicslen-ni
 # flake.nix
 inputs.nixpkgs-lib.url = "github:viicslen-nix/lib";
 
-# Desktop helpers (needs pkgs + lib)
-niriLib = inputs.nixpkgs-lib.mkDesktopLib { inherit pkgs lib; };
-niriLib.niri.mkRecordCmd ""             # → shell string
-niriLib.niri.mkMenu [ { key = "q"; … } ] # → derivation
+# Wayland helpers (needs pkgs + lib)
+wl = inputs.nixpkgs-lib.lib.wayland { inherit pkgs lib; };
+wl.mkRecordCmd ''-o "$(pick-output)"''  # → shell snippet; exits quietly if the flag value is empty
+wl.mkMenu [ { key = "q"; desc = "…"; cmd = "…"; } ] # → executable path
 
 # Full lib (needs consuming flake's inputs + outputs)
 lib = inputs.nixpkgs-lib.mkLib { inherit inputs outputs; };
