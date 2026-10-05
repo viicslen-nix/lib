@@ -11,8 +11,8 @@
   notify = "${pkgs.libnotify}/bin/notify-send";
 in {
   # Shell snippet running wl-screenrec with extra flags (e.g. "-o DP-1"), spliced unquoted so they may use $(...); an empty one (a cancelled picker) exits without recording.
-  mkRecordCmd = grimArgs: ''
-    set -- ${grimArgs}
+  mkRecordCmd = recorderArgs: ''
+    set -- ${recorderArgs}
     for arg; do [ -n "$arg" ] || exit 0; done
     DIR="$HOME/Videos/Recordings"
     FILE="$DIR/recording-$(date +%Y%m%d-%H%M%S).mp4"

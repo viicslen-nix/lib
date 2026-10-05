@@ -4,8 +4,7 @@
     inputs,
     outputs,
   }: hostsPath: let
-    nixpkgs = inputs.nixpkgs;
-    lib = nixpkgs.lib;
+    inherit (inputs) nixpkgs;
 
     # Import hosts configuration (shared and hosts definitions)
     hostsConfig = import hostsPath {};
@@ -65,11 +64,7 @@
 
     # Create home-manager sharedModules configuration
     # Only applies if home-manager is enabled (options exist)
-    hmSharedModulesConfig = {
-      config,
-      options,
-      ...
-    }: {
+    hmSharedModulesConfig = {options, ...}: {
       config = lib.mkIf (builtins.hasAttr "home-manager" options) {
         home-manager.sharedModules = allHmModules;
       };

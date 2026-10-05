@@ -5,7 +5,7 @@
   # system, preferring `legacyPackages` over `packages`.
   mkFlakeInputsOverlay = inputs: final: _: {
     inputs =
-      builtins.mapAttrs (
+      lib.mapAttrs (
         _: flake: let
           system = final.stdenv.hostPlatform.system;
           legacyPackages = (flake.legacyPackages or {}).${system} or {};

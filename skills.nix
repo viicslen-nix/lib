@@ -83,5 +83,6 @@
       Skill patch no longer applies — these anchors are gone from ${toString src}:
       ${lib.concatMapStringsSep "\n" (s: "  - ${firstLine s}") missing}
       Re-sync the patch against the current upstream text.
-    ''; builtins.replaceStrings (map (s: s.from) subs) (map (s: s.to) subs) body;
+    '';
+      builtins.replaceStrings (map (s: s.from) subs) (map (s: s.to) subs) body;
 }

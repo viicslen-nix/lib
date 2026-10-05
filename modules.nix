@@ -15,7 +15,7 @@
     importModule = name: let
       modulePath = path + "/${name}/default.nix";
     in {
-      name = name;
+      inherit name;
       value =
         if builtins.pathExists modulePath
         then import modulePath
@@ -111,7 +111,7 @@
       # Get the module helper for recursion
       modulesHelper = import ./modules.nix {inherit lib;};
     in {
-      name = name;
+      inherit name;
       value =
         if hasDefault
         then

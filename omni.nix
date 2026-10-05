@@ -51,8 +51,10 @@
 
     unified = loaderFor [];
     ownPkgs = loaderFor ["nixpkgs"];
+    loaderOf = index:
+      if builtins.elem index ownNixpkgs
+      then ownPkgs
+      else unified;
   in
-    lib.mapAttrs
-    (_: index: (if builtins.elem index ownNixpkgs then ownPkgs else unified).${index})
-    mapping;
+    lib.mapAttrs (_: index: (loaderOf index).${index}) mapping;
 }
