@@ -56,18 +56,16 @@
     mergedConfigDirs = config ++ configDirs;
   in
     inputs.nixpkgs.lib.mkIf (cfg.enable && cfg.autoPersistence) {
-      modules.functionality.impermanence.directories = directories;
-      modules.functionality.impermanence.files = files;
-      modules.functionality.impermanence.config = mergedConfigDirs;
-      modules.functionality.impermanence.share = share;
-      modules.functionality.impermanence.cache = cache;
+      modules.functionality.impermanence = {
+        inherit directories files share cache;
+        config = mergedConfigDirs;
+      };
     };
 
   # Home-manager persistence helper for NixOS
-  # Usage: mkHmPersistence { config, users, persistence }
+  # Usage: mkHmPersistence { options, users, directories, files, configDirs, share, cache }
   # This applies persistence settings to all specified users via home-manager
   mkHmPersistence = {
-    config,
     options,
     users,
     directories ? [],
@@ -76,14 +74,13 @@
     share ? [],
     cache ? [],
   }: let
-    lib = inputs.nixpkgs.lib;
+    inherit (inputs.nixpkgs) lib;
     homeManagerLoaded = builtins.hasAttr "home-manager" options;
     mkUserPersistence = _user: {
-      modules.functionality.impermanence.directories = directories;
-      modules.functionality.impermanence.files = files;
-      modules.functionality.impermanence.config = configDirs;
-      modules.functionality.impermanence.share = share;
-      modules.functionality.impermanence.cache = cache;
+      modules.functionality.impermanence = {
+        inherit directories files share cache;
+        config = configDirs;
+      };
     };
   in
     lib.mkIf homeManagerLoaded {
