@@ -21,6 +21,9 @@
     (lib.attrByPath ["modules" "programs" "mkcert" "enable"] false config)
     {inherit domains;};
 
+  # Volume suffix for a named volume on a userns-mapped container. Docker rejects `:idmap`.
+  idmap = config: lib.optionalString (config.virtualisation.oci-containers.backend == "podman") ":idmap";
+
   # Traefik discovery labels for one container: an HTTP router that redirects to
   # HTTPS, the HTTPS router itself, and the backend service.
   #

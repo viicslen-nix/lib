@@ -41,7 +41,7 @@ Systems are those of [`nix-systems/default`](https://github.com/nix-systems/defa
 | `discovery` | `discovery.nix` | `discover`, `segmentsOf`, `assertUnique`, `mkTree` — find every `default.nix` (skipping `_`-prefixed paths) and rebuild a nested view over a flat module registry |
 | `overlays` | `overlays.nix` | `mkFlakeInputsOverlay` (`pkgs.inputs.<flake>`), `mkChannelOverlay` (`pkgs.stable` / `pkgs.unstable`-style channels) |
 | `omni` | `omni.nix` | `mkInputs` — resolve an omniflake-index mapping into `inputs` under one override policy; `ownNixpkgs` keeps chosen flakes on their own nixpkgs pin |
-| `containers` | `containers.nix` | `mkHostOption`, `mkMkcertDomains`, `mkTraefikLabels` for OCI-container modules |
+| `containers` | `containers.nix` | `mkHostOption`, `mkMkcertDomains`, `mkTraefikLabels`, `idmap` (the podman-only `:idmap` volume suffix) for OCI-container modules |
 | `persistence` | `persistence.nix` | `mkPersistentDirs`/`Files`/`Config`/`Share`/`Cache`, `mkPersistence`, `mkHmPersistence`, `mkNixosPersistence` — impermanence entries that apply only when that module is enabled |
 | `skills` | `skills.nix` | `mkSkillAttrSet`, `mkMarkdownAttrSet`, `fromInput`, `selectFromInput`, `patchSkill` for AI-agent skill sets |
 | `umport` | `umport.nix` | Recursive or flat `.nix` file importer (MIT, from [yunfachi/nypkgs](https://github.com/yunfachi/nypkgs)) |
